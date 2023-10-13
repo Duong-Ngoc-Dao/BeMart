@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiPostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('post')->group(function(){
+    // Lấy ra danh sách post
+    Route::get('/', [ApiPostController::class, 'index']);
+
+    // Lấy thông tin chi tiết
+    Route::get('/{id}', [ApiPostController::class, 'show']);
+
+    // Thêm thông tin post
+    Route::post('/', [ApiPostController::class, 'store']);
+
+    // Cập nhật thông tin post
+    Route::put('/{id}', [ApiPostController::class, 'update']);
+
+    // Xóa thông tin post
+    Route::delete('/{id}', [ApiPostController::class, 'destroy']);
 });
