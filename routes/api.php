@@ -1,6 +1,11 @@
 <?php
+
 use App\Http\Controllers\API\ProductController;
 use App\Models\Product;
+
+
+
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 
 Route::prefix('product')->group(function(){
     // Lấy ra danh sách khách hàng
