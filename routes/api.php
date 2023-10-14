@@ -1,5 +1,6 @@
 <?php
-
+use App\Http\Controllers\API\ProductController;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('product')->group(function(){
+    // Lấy ra danh sách khách hàng
+    Route::get('/', [ProductController::class, 'index']);
+
+    // Lấy thông tin chi tiết
+    Route::get('/{id}', [ProductController::class, 'show']);
+
+    // Thêm thông tin khách hàng
+    Route::post('/', [ProductController::class, 'store']);
+
+    // Cập nhật thông tin khách hàng
+    Route::put('/{id}', [ProductController::class, 'update']);
+
+    // Xóa thông tin khách hàng
+    Route::delete('/{id}', [ProductController::class, 'destroy']);
 });
