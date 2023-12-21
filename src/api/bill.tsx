@@ -1,4 +1,5 @@
 import { IBill } from "../interfaces/bill";
+import { ProductItem } from "@/interfaces/product";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const billApi = createApi({
@@ -14,6 +15,9 @@ const billApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    getProductsByBillId: builder.query<ProductItem[], number>({
+      query: (id) => `/bills/${id}/products`,
+    }),
     getBills: builder.query<IBill, void>({
       query: () => `/bills`,
       providesTags: ["Bill"],
@@ -54,6 +58,7 @@ export const {
   useRemoveBillMutation,
   useAddBillMutation,
   useUpdateBillMutation,
+  useGetProductsByBillIdQuery,
 } = billApi;
 export const billReducer = billApi.reducer;
 

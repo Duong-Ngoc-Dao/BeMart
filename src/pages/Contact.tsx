@@ -92,7 +92,7 @@ const Contact = () => {
           name="content"
           rules={[{ min: 10, message: "Đánh giá phải có ít nhất 10 ký tự" }]}
         >
-          <Input />
+          <Input.TextArea />
           {/* Sử dụng Input.TextArea cho ô đánh giá. */}
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

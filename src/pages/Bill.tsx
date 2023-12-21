@@ -32,7 +32,7 @@ const Bill = () => {
       total,
       status,
     } = values;
-    const products: ProductItem[] = cartItems.map((item) => ({
+    const products: ProductItem[] = data.map((item) => ({
       id: item.id,
       name: item.name,
       price: item.price,
@@ -41,6 +41,7 @@ const Bill = () => {
       quantity: item.quantity,
       category: "", // Thêm danh mục dựa trên dữ liệu của bạn
     }));
+
     addBill({
       id,
       user_id,
@@ -95,152 +96,154 @@ const Bill = () => {
     }, 0);
   };
   return (
-    <div className="row">
-      <Form.Item
-        label="Địa chỉ nhận hàng"
-        name="shippingAddress"
-        rules={[
-          {
-            required: true,
-            message: "Please input a valid shipping address.",
-          },
-        ]}
-      >
-        Dương Trung Hiếu (+84) 382387055 Ngõ 87 Phú Đô, Phường Phú Đô, Phường
-        Phú Đô, Quận Nam Từ Liêm, Hà Nội
-      </Form.Item>
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            <th>Ảnh</th>
-            <th>Sản Phẩm</th>
-            <th>Đơn Giá</th>
-            <th>Số Lượng</th>
-            <th>Số Tiền</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item) => {
-            return (
-              <tr key={item.id}>
-                <td>
-                  <img
-                    src={item.img}
-                    className="img-fluid rounded"
-                    alt={item.name}
-                  />
-                </td>
-                <td>{item.name}</td>
-                <td>{formatCurrency(item.price)}</td>
-
-                <td>{item.quantity}</td>
-                <td>{formatCurrency(item.price * item.quantity)}</td>
-                <td></td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <div className="total-price" style={{ textAlign: "right" }}>
-        <strong>Tổng số tiền ( {calculateTotalItems()}) sản phẩm:</strong>
-        <strong> {formatCurrency(calculateTotalPrice())}</strong>
-      </div>
-      <Form
-        name="basic"
-        labelCol={{ span: 10 }}
-        wrapperCol={{ span: 14 }}
-        style={{ maxWidth: 600 }}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        {/* Display total price */}
-        <Form.Item<FieldType>
-          label="Status"
-          name="status"
-          initialValue="Đang nhận hàng" // Set the initial value for the status
-          hidden
-        >
-          <Input disabled />
-        </Form.Item>
-        <Form.Item<FieldType> label="Lưu ý" name="notes">
-          <Input placeholder="Lưu ý cho Người bán..." />
-        </Form.Item>
-
-        <Form.Item<FieldType>
-          label="Total"
-          name="total"
-          initialValue={calculateTotalPrice()} // Assuming you want to set the initial value as the calculated total
-          rules={[{ required: true, message: "Please provide the total" }]}
-          hidden
-        >
-          <Input disabled />
-        </Form.Item>
-
-        <Form.Item<FieldType>
-          label="Purchase Date"
-          name="date"
-          initialValue={new Date().toISOString()} // Set an initial value, you can customize this
-          rules={[
-            { required: true, message: "Please provide the purchase date" },
-          ]}
-          hidden
-        >
-          <Input disabled />
-        </Form.Item>
+    <section className="bg-gray-100 px-2">
+      <div className="row">
         <Form.Item
-          label="Delivery Option"
-          name="payment_method"
-          initialValue="Thanh toán khi nhận hàng"
+          label="Địa chỉ nhận hàng"
+          name="shippingAddress"
+          rules={[
+            {
+              required: true,
+              message: "Please input a valid shipping address.",
+            },
+          ]}
         >
-          <Tabs onChange={(key) => setDeliveryOption(key)}>
-            <TabPane tab="Thanh toán khi nhận hàng" key="pickup">
-              Thanh toán khi nhận hàng
-            </TabPane>
-            <TabPane tab="Mã QR" key="qrCode"></TabPane>
-          </Tabs>
+          Dương Trung Hiếu (+84) 382387055 Ngõ 87 Phú Đô, Phường Phú Đô, Phường
+          Phú Đô, Quận Nam Từ Liêm, Hà Nội
         </Form.Item>
-        {deliveryOption === "qrCode" && (
-          <Form.Item
-            label="QR Code"
-            name="payment_method"
-            rules={[
-              {
-                required: true,
-                message: "Please scan the QR code.",
-              },
-            ]}
-          >
-            <img src={`${process.env.PUBLIC_URL}/images/maQr.png`} alt="" />
-            {/* Add QR code scanning component or logic here */}
-            {/* For example: <QRCodeScanner onScan={(data) => handleQRCodeScan(data)} /> */}
-          </Form.Item>
-        )}
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th>Ảnh</th>
+              <th>Sản Phẩm</th>
+              <th>Đơn Giá</th>
+              <th>Số Lượng</th>
+              <th>Số Tiền</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item) => {
+              return (
+                <tr key={item.id}>
+                  <td>
+                    <img
+                      src={item.img}
+                      className="img-fluid rounded"
+                      alt={item.name}
+                    />
+                  </td>
+                  <td>{item.name}</td>
+                  <td>{formatCurrency(item.price)}</td>
 
-        <div className="col-md-12 mt-5">
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button
-              style={{ marginRight: 20 }}
-              type="primary"
-              danger
-              htmlType="submit"
-            >
-              Đặt Hàng
-            </Button>
-            <Button
-              type="primary"
-              danger
-              className="ml-2"
-              onClick={() => navigate("/adminBill")}
-            >
-              Back
-            </Button>
-          </Form.Item>
+                  <td>{item.quantity}</td>
+                  <td>{formatCurrency(item.price * item.quantity)}</td>
+                  <td></td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <div className="total-price" style={{ textAlign: "right" }}>
+          <strong>Tổng số tiền ( {calculateTotalItems()}) sản phẩm:</strong>
+          <strong> {formatCurrency(calculateTotalPrice())}</strong>
         </div>
-      </Form>
-    </div>
+        <Form
+          name="basic"
+          labelCol={{ span: 10 }}
+          wrapperCol={{ span: 14 }}
+          style={{ maxWidth: 600 }}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          {/* Display total price */}
+          <Form.Item<FieldType>
+            label="Status"
+            name="status"
+            initialValue="Đang nhận hàng" // Set the initial value for the status
+            hidden
+          >
+            <Input disabled />
+          </Form.Item>
+          <Form.Item<FieldType> label="Lưu ý" name="notes">
+            <Input placeholder="Lưu ý cho Người bán..." />
+          </Form.Item>
+
+          <Form.Item<FieldType>
+            label="Total"
+            name="total"
+            initialValue={calculateTotalPrice()} // Assuming you want to set the initial value as the calculated total
+            rules={[{ required: true, message: "Please provide the total" }]}
+            hidden
+          >
+            <Input disabled />
+          </Form.Item>
+
+          <Form.Item<FieldType>
+            label="Purchase Date"
+            name="date"
+            initialValue={new Date().toISOString()} // Set an initial value, you can customize this
+            rules={[
+              { required: true, message: "Please provide the purchase date" },
+            ]}
+            hidden
+          >
+            <Input disabled />
+          </Form.Item>
+          <Form.Item
+            label="Delivery Option"
+            name="payment_method"
+            initialValue="Thanh toán khi nhận hàng"
+          >
+            <Tabs onChange={(key) => setDeliveryOption(key)}>
+              <TabPane tab="Thanh toán khi nhận hàng" key="pickup">
+                Thanh toán khi nhận hàng
+              </TabPane>
+              <TabPane tab="Mã QR" key="qrCode"></TabPane>
+            </Tabs>
+          </Form.Item>
+          {deliveryOption === "qrCode" && (
+            <Form.Item
+              label="QR Code"
+              name="payment_method"
+              rules={[
+                {
+                  required: true,
+                  message: "Please scan the QR code.",
+                },
+              ]}
+            >
+              <img src={`${process.env.PUBLIC_URL}/images/maQr.png`} alt="" />
+              {/* Add QR code scanning component or logic here */}
+              {/* For example: <QRCodeScanner onScan={(data) => handleQRCodeScan(data)} /> */}
+            </Form.Item>
+          )}
+
+          <div className="col-md-12 mt-5">
+            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+              <Button
+                style={{ marginRight: 20 }}
+                type="primary"
+                danger
+                htmlType="submit"
+              >
+                Đặt Hàng
+              </Button>
+              <Button
+                type="primary"
+                danger
+                className="ml-2"
+                onClick={() => navigate("/adminBill")}
+              >
+                Back
+              </Button>
+            </Form.Item>
+          </div>
+        </Form>
+      </div>
+    </section>
   );
 };
 

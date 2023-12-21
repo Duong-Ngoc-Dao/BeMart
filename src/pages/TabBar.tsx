@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../css/tabStyles.css";
 import { IBill } from "../interfaces/bill";
 import { useRemoveBillMutation } from "../api/bill";
@@ -23,7 +23,12 @@ const TabBar = () => {
         console.log(`Canceling order with status: ${status}`);
         return;
       }
-
+      const userConfirmed = window.confirm(
+        "Bạn có chắc chắn muốn huỷ đơn hàng không?"
+      );
+      if (!userConfirmed) {
+        return; // User canceled the action
+      }
       // Common cancellation logic
       await removeBill(orderId);
 
@@ -83,9 +88,6 @@ const TabBar = () => {
               <dl className="divide-y divide-gray-100">
                 <div className="flex items-center justify-between px-4 py-6">
                   <div>
-                    <dt className="text-sm font-medium leading-6 text-gray-900">
-                      {item.address}
-                    </dt>
                     <dd
                       style={{ textAlign: "right" }}
                       className="mt-1 text-sm leading-6 text-gray-700"
@@ -93,6 +95,36 @@ const TabBar = () => {
                       Thành tiền: {item.total}
                     </dd>
                   </div>
+                  <div className="">
+                    {/* Render products associated with the bill */}
+                    {item.products.map((product: ProductItem) => (
+                      <div key={product.id} className="product-item">
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <div>
+                            <img
+                              src={product.img}
+                              alt={product.name}
+                              style={{
+                                maxWidth: "100px",
+                                maxHeight: "100px",
+                                marginRight: "18px",
+                                paddingTop: "10px",
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <p>{product.name}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <div>
+                      <dt className="text-sm font-medium leading-6 text-gray-900">
+                        {item.address}
+                      </dt>
+                    </div>
+                  </div>
+
                   {item.status === "shipping" ||
                   item.status === "completed" ||
                   item.status === "cancelled" ||
@@ -103,7 +135,13 @@ const TabBar = () => {
                   ) : (
                     <button
                       onClick={() => handleCancelOrder(item.id, item.status)}
-                      className="text-red-600 hover:text-red-800"
+                      className="text-red-600 hover:text-red-800 "
+                      style={{
+                        fontSize: "12px",
+                        padding: "4px 8px",
+                        marginTop: "10px",
+                        color: "blue",
+                      }}
                     >
                       Huỷ đơn hàng
                     </button>
