@@ -1,27 +1,27 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import Search from "../search";
-import { useAppDispatch, useAppSelector } from "../../store/hook";
-import { getCartByUser } from "../../actions/cart";
+// import { useAppDispatch, useAppSelector } from "../../store/hook";
+// import { getCartByUser } from "../../actions/cart";
 const Header = () => {
 
   // state
   const navigate = useNavigate();
-  const { carts } = useAppSelector((item: any) => item.carts);
-  const dispatch = useAppDispatch();
+  // const { carts } = useAppSelector((item: any) => item.carts);
+  // const dispatch = useAppDispatch();
 
 
   // get user from loc alstore
   const userStr = localStorage.getItem("users");
   const user = userStr ? JSON.parse(userStr) : null;
-  const _id = user?.user?._id;
-  const countCart = carts?.products?.length
+  // const _id = user?.user?._id;
+  // const countCart = carts?.products?.length
 
-  useEffect(() => {
-    if (user) {
-      dispatch(getCartByUser(_id))
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (user) {
+  //     dispatch(getCartByUser(_id))
+  //   }
+  // }, [])
 
   // logout
   const logout = () => {
@@ -143,9 +143,9 @@ const Header = () => {
               <Link to="/cart">
                 <i className="fa-solid fa-cart-shopping fa-bounce text-[20px]"></i>
               </Link>
-              <span className="absolute top-[-10px] z-10 border rounded-full px-2">
+              {/* <span className="absolute top-[-10px] z-10 border rounded-full px-2">
                 {countCart || 0}
-              </span>
+              </span> */}
             </div>
           </div>
         </div>

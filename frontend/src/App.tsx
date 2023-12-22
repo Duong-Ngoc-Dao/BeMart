@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 
 import ClientLayout from "./layout/ClientLayout";
 import AdminLayout from "./layout/AdminLayout";
@@ -38,6 +38,7 @@ import PostAdd from "./pages/admin/post/PostAdd";
 function App() {
   return (
     <div>
+
       <Routes>
         {/* CLIENT */}
         <Route path="/" element={<ClientLayout />}>
@@ -58,7 +59,7 @@ function App() {
           <Route path="posts">
             <Route index element={<PostList />} />
             <Route path="add" element={<PostAdd />} />
-
+          
           </Route>
           <Route path="products">
             <Route index element={<ProductList />} />
